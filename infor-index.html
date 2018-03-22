@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>外贸</title>
+<link href="CSS/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+function $(id) { return document.getElementById(id); }
+function addLoadEvent(func){
+var oldonload = window.onload;
+if (typeof window.onload != 'function') {
+window.onload = func;
+} else {
+window.onload = function(){
+oldonload();
+func();
+}
+}
+}
+function addBtn() {
+if(!$('ibanner')||!$('ibanner_pic')) return;
+var picList = $('ibanner_pic').getElementsByTagName('a');
+if(picList.length==0) return;
+var btnBox = document.createElement('div');
+btnBox.setAttribute('id','ibanner_btn');
+var SpanBox ='';
+for(var i=1; i<=picList.length; i++ ) {
+var spanList = '<span class="normal">'+i+'</span>';
+SpanBox += spanList;
+}
+btnBox.innerHTML = SpanBox;
+$('ibanner').appendChild(btnBox);
+$('ibanner_btn').getElementsByTagName('span')[0].className = 'current';
+for (var m=0; m<picList.length; m++){
+var attributeValue = 'picLi_'+m
+picList[m].setAttribute('id',attributeValue);
+}
+}
+function moveElement(elementID,final_x,final_y,interval) {
+if (!document.getElementById) return false;
+if (!document.getElementById(elementID)) return false;
+var elem = document.getElementById(elementID);
+if (elem.movement) {
+clearTimeout(elem.movement);
+}
+if (!elem.style.left) {
+elem.style.left = "0px";
+}
+if (!elem.style.top) {
+elem.style.top = "0px";
+}
+var xpos = parseInt(elem.style.left);
+var ypos = parseInt(elem.style.top);
+if (xpos == final_x && ypos == final_y) {
+moveing = false;
+return true;
+}
+if (xpos < final_x) {
+var dist = Math.ceil((final_x - xpos)/10);
+xpos = xpos + dist;
+}
+if (xpos > final_x) {
+var dist = Math.ceil((xpos - final_x)/10);
+xpos = xpos - dist;
+}
+if (ypos < final_y) {
+var dist = Math.ceil((final_y - ypos)/10);
+ypos = ypos + dist;
+}
+if (ypos > final_y) {
+var dist = Math.ceil((ypos - final_y)/10);
+ypos = ypos - dist;
+}
+elem.style.left = xpos + "px";
+elem.style.top = ypos + "px";
+var repeat = "moveElement('"+elementID+"',"+final_x+","+final_y+","+interval+")";
+elem.movement = setTimeout(repeat,interval);
+}
+function classNormal() {
+var btnList = $('ibanner_btn').getElementsByTagName('span');
+for (var i=0; i<btnList.length; i++){
+btnList[i].className='normal';
+}
+}
+function picZ() {
+var picList = $('ibanner_pic').getElementsByTagName('a');
+for (var i=0; i<picList.length; i++){
+picList[i].style.zIndex='1';
+}
+}
+var autoKey = false;
+function iBanner() {
+if(!$('ibanner')||!$('ibanner_pic')||!$('ibanner_btn')) return;
+$('ibanner').onmouseover = function(){autoKey = true};
+$('ibanner').onmouseout = function(){autoKey = false};
+
+var btnList = $('ibanner_btn').getElementsByTagName('span');
+var picList = $('ibanner_pic').getElementsByTagName('a');
+if (picList.length==1) return;
+picList[0].style.zIndex='2';
+for (var m=0; m<btnList.length; m++){
+btnList[m].onmouseover = function() {
+for(var n=0; n<btnList.length; n++) {
+if (btnList[n].className == 'current') {
+var currentNum = n;
+}
+}
+classNormal();
+picZ();
+this.className='current';
+picList[currentNum].style.zIndex='2';
+var z = this.childNodes[0].nodeValue-1;
+picList[z].style.zIndex='3';
+if (currentNum!=z){
+picList[z].style.left='650px';
+moveElement('picLi_'+z,0,0,10);
+}
+}
+}
+}
+setInterval('autoBanner()', 5000);
+function autoBanner() {
+if(!$('ibanner')||!$('ibanner_pic')||!$('ibanner_btn')||autoKey) return;
+var btnList = $('ibanner_btn').getElementsByTagName('span');
+var picList = $('ibanner_pic').getElementsByTagName('a');
+if (picList.length==1) return;
+for(var i=0; i<btnList.length; i++) {
+if (btnList[i].className == 'current') {
+var currentNum = i;
+}
+}
+if (currentNum==(picList.length-1) ){
+classNormal();
+picZ();
+btnList[0].className='current';
+picList[currentNum].style.zIndex='2';
+picList[0].style.zIndex='3';
+picList[0].style.left='650px';
+moveElement('picLi_0',0,0,10);
+} else {
+classNormal();
+picZ();
+var nextNum = currentNum+1;
+btnList[nextNum].className='current';
+picList[currentNum].style.zIndex='2';
+picList[nextNum].style.zIndex='3';
+picList[nextNum].style.left='650px';
+moveElement('picLi_'+nextNum,0,0,10);
+}
+}
+addLoadEvent(addBtn);
+addLoadEvent(iBanner);
+</script>
+</head>
+
+<body>
+<div class="kong"></div>
+<div class="body">
+<div class="top">
+	<div class="top_1"><img src="images/1358732820.png" height="38" width="150" /></div>
+    <div class="top_2">
+    	<form action="#">
+        	<input type="text" class="form1" value="请输入你要您要搜索的信息" />
+        	<input type="submit" class="form2" value="搜索" />
+        </form>
+    </div>
+</div>
+<div class="nav">
+	<ul>
+    	<li><a href="index.html">首&nbsp;&nbsp;页</a></li>
+        <li><a href="gongsi.html">关于我们</a>
+        	<!--<ul class="banner_1">
+            	<li><a href="#">公司简介</a></li>
+            </ul> -->
+        </li>
+        <li><a href="product-index.html">产品中心</a></li>
+        <li><a href="#">新闻中心</a></li>
+        <li><a href="#">质量体系</a></li>
+        <li><a href="infor-index.html">联系我们</a></li>
+    </ul>
+</div>
+<div class="kong1"></div>
+<div class="banner">
+	<div id="ibanner">
+		<div id="ibanner_pic">
+            <a href="#"><img src="images/banner5.jpg" width="960" height="300" /></a>
+            <a href="#"><img src="images/banner.jpg" width="960" height="300" /></a>
+            <a href="#"><img src="images/banner6_2.jpg" width="960" height="300" /></a>
+		</div>
+	</div>
+</div>
+<div class="main">
+	<iframe src="infor-left.html" width="260" height="700" frameborder="0" name="f1" scrolling="no"></iframe>
+    <iframe src="conn.html" width="690" height="700" frameborder="0" name="f2" scrolling="no"></iframe>
+</div>
+<div class="foot">
+	<div class="foot_1">
+    	<ul>
+        	<li><a href="gongsi-right.html" target="f2">关于我们&nbsp;&nbsp;|&nbsp;</a></li>
+        	<li><a href="gongsi-right -1.html" target="f2">企业文化&nbsp;&nbsp;|&nbsp;</a></li>
+            <li><a href="conn.html" target="f2">联系方式&nbsp;&nbsp;|&nbsp;</a></li>
+            <li><a href="infor.html" target="f2">信息反馈&nbsp;&nbsp;|&nbsp;</a></li>
+            <li><a href="#">友情链接</a></li>
+        </ul>
+    </div>
+    <div class="foot_2">版权所有 Copyright(C)2009-2012 深圳某某电子公司</div>
+</div>
+</div>
+<div style="height:20px"></div>
+</body>
+</html>
